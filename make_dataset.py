@@ -26,13 +26,13 @@ while(True):
         count+=1
         cv2.rectangle(img, (x,y), (x+w,y+h), (255,0,0), 2)
         # Сохраняем захваченное изображение в папку dataset
-        cv2.imwrite("datasetV/EM_{}_{}.jpg".format(face_id, int(time.time()*1e9)), gray[y:y+h,x:x+w])
+        cv2.imwrite("dataset/EM_{}_{}.jpg".format(face_id, int(time.time()*1e9)), gray[y:y+h,x:x+w])
         cv2.imshow('image', img)
 
-    k = cv2.waitKey(100) & 0xff # Для завершения работы программы нажмите «ESC»
+    k = cv2.waitKey(300) & 0xff # Для завершения работы программы нажмите «ESC»
     if k == 27:
         break
-    elif count >= 300: # Выполнение программы заканчивается после того, как сделает определённое количество кадров (захватит изображений лица)
+    elif count >= 200: # Выполнение программы заканчивается после того, как сделает определённое количество кадров (захватит изображений лица)
         break
     print(count)
 
@@ -40,4 +40,3 @@ while(True):
 print("\n [INFO] Exiting Program and cleanup stuff")
 cam.release()
 cv2.destroyAllWindows()
-6
