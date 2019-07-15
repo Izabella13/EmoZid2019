@@ -38,6 +38,7 @@ j = False
 interval = float(1)
 first_go = True
 time_pred1 = 0
+index = 0
 mixer.init()
 def time_now():
     time_pred = str(datetime.datetime.now().time())
@@ -67,12 +68,15 @@ while(1): # цикл обработки nn кадров
     ret, frame = video_capture.read()# запуск камеры
     detections = detector(frame, 1) # ф-ция выделяет лицо в прямоугольник
     if len(detections) == 0:
-        print('нет никого в кадре')
-        j = False
+        if (j) or (first_go):
+            print('нет никого в кадре')
+            j = False
     else:
         for k,d in enumerate(detections): # цикл по всем найденным на изображении лицам
-            shape = predictor(frame, d) #возвращает координаты точек на лице
-            face_descriptor_frame = facerec.compute_face_descriptor(frame, shape) # получаем 128 дискрипторов лица
+            if (index % 5 == 0) or (index == 0):
+                shape = predictor(frame, d) #возвращает координаты точек на лице
+                face_descriptor_frame = facerec.compute_face_descriptor(frame, shape) # получаем 128 дискрипторов лица
+            index+=1
             cv2.rectangle(frame, (detections[0].left(), detections[0].top()), (detections[0].right(), detections[0].bottom()), (0, 0, 255), 1) # рисуем прямоугольник вокруг лица
             for k in range(0,17): #   
                 cv2.circle(frame, (shape.part(k).x, shape.part(k).y), 1, (255,0,255), 1)
@@ -86,12 +90,9 @@ while(1): # цикл обработки nn кадров
                 cv2.circle(frame, (shape.part(k).x, shape.part(k).y), 1, (0,0,255), 1)
             cv2.circle(frame, (shape.part(30).x, shape.part(30).y), 1, (0,255,255), 1)
         if j == False:
-            
-
             for c in range(len(fdi)):
                 q = distance.euclidean(fdi[c],face_descriptor_frame)
                 if (q<0.6) and (time_now() >= interval + time_pred1) or (first_go) and (q<0.6):
-
                     mixer.music.load(audio[c]) #Загрузка звуковой дорожки, содержащихся в списке sound, с последующим ее проигрыванием
                     mixer.music.play()
                     print('Привет {}!'.format(names[c]))
@@ -115,7 +116,7 @@ while(1): # цикл обработки nn кадров
         break 
 cv2.destroyAllWindows()
 
-nn=10 # кол-во кадров для обработки для определения эмоций
+nn=50 # кол-во кадров для обработки для определения эмоций
 P_em=0.5 # уровень подтвержения эмоций(если выше P_em, то переходим  к следующей эмоции)
 #Функция отвечающая за вывод окна с картинками
 detector = dlib.get_frontal_face_detector() # создаем объект, который выделяет лицо прямоугольником
@@ -153,8 +154,9 @@ for i, em in enumerate(emotions): #Начало цикла, проходящем
                     em_n=0
                     print(em_n)
             for k,d in enumerate(detections): # цикл по всем найденным на изображении лицам
-                shape = predictor(frame, d) #возвращает координаты точек на лице
-                face_descriptor = facerec.compute_face_descriptor(frame, shape) # получаем 128 дискрипторов лица
+                if (j % 5 == 0) or (j==0):
+                    shape = predictor(frame, d) #возвращает координаты точек на лице
+                    face_descriptor = facerec.compute_face_descriptor(frame, shape) # получаем 128 дискрипторов лица
                 dat=[] # создаем список для дискрипторов
                 dat.append(face_descriptor) # записываем 128 дискрипторов для каждого лица
                 em_n=clf.predict(dat)
