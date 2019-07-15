@@ -4,38 +4,19 @@ import glob, cv2, dlib
 from PIL import ImageFont, ImageDraw, Image
 import pickle
 import numpy as np
-
-def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
-    # initialize the dimensions of the image to be resized and
-    # grab the image size
+def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA): # Инициализация размера изображения, которое нужно изменить, и захват его размера
     dim = None
     (h, w) = image.shape[:2]
-
-    # if both the width and height are None, then return the
-    # original image
-    if width is None and height is None:
+    if width is None and height is None: #Если ширина и высота ничему не равны, вернуть исходное изображение
         return image
-
-    # check to see if the width is None
-    if width is None:
-        # calculate the ratio of the height and construct the
-        # dimensions
-        r = height / float(h)
+    if width is None: # Проевряем, если высота ничему не равна
+        r = height / float(h) # Рассчитываем соотношение высоты и построить размеры
         dim = (int(w * r), height)
-
-    # otherwise, the height is None
-    else:
-        # calculate the ratio of the width and construct the
-        # dimensions
-        r = width / float(w)
+    else: #Условие, если высота чему-то равна
+        r = width / float(w) # Рассчитываем соотношение высоты и построить размеры
         dim = (width, int(h * r))
-
-    # resize the image
-    resized = cv2.resize(image, dim, interpolation = inter)
-
-    # return the resized image
-    return resized
-
+    resized = cv2.resize(image, dim, interpolation = inter) # Меняем размер изображения
+    return resized # Возвращаем измененный размер изображения
 nn=10 # кол-во кадров для обработки для определения эмоций
 P_em=0.5 # уровень подтвержения эмоций(если выше P_em, то переходим  к следующей эмоции)
 #Функция отвечающая за вывод окна с картинками

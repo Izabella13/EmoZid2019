@@ -6,6 +6,7 @@ import glob, cv2, dlib
 from PIL import ImageFont, ImageDraw, Image
 import pickle
 import numpy as np
+import datetime
 
 def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA): # Инициализация размера изображения, которое нужно изменить, и захват его размера
     dim = None
@@ -29,14 +30,21 @@ facerec = dlib.face_recognition_model_v1(dat_path+'dlib_face_recognition_resnet_
 video_capture = cv2.VideoCapture(0) # подключение камеры
 video_capture.set(3, 160) # задаем размеры кадра камеры   160x120
 video_capture.set(4, 120) # 360x240
-img_path = ['EM_5_1560940694830835456.jpg','EM_1_1560854511733233152.jpg','EM_1_1560864895089599232.jpg','vadimchik_v3.0U.jpg']
+img_path = ('EM_5_1560940694830835456.jpg','EM_1_1560854511733233152.jpg','EM_1_1560864895089599232.jpg','vadimchik_v3.0U.jpg')
 fdi = []
-audio = ['u_D.mp3','u_N.mp3','u_I.mp3','u_V.mp3','u_U.mp3']
+audio = ('Daniil.mp3','u_N.mp3','u_I.mp3','u_V.mp3','u_U.mp3')
 names = ['Даня','Никита','Белла','Вадимчик']
-j=0
+j = False
+interval = float(1)
+first_go = True
+time_pred1 = 0
 mixer.init()
+def time_now():
+    time_pred = str(datetime.datetime.now().time())
+    time_predU = float(time_pred[6:])
+    return time_predU
 for im in img_path:
-    img = cv2.imread(mp3_pic_path+im)
+    img = cv2.imread(im)
     detections = detector(img, 1) # ф-ция выделяет лицо в прямоугольник
     for k,d in enumerate(detections): # цикл по всем найденным на изображении лицам
         shape = predictor(img, d) #возвращает координаты точек на лице
@@ -60,7 +68,7 @@ while(1): # цикл обработки nn кадров
     detections = detector(frame, 1) # ф-ция выделяет лицо в прямоугольник
     if len(detections) == 0:
         print('нет никого в кадре')
-        j=0
+        j = False
     else:
         for k,d in enumerate(detections): # цикл по всем найденным на изображении лицам
             shape = predictor(frame, d) #возвращает координаты точек на лице
@@ -77,24 +85,33 @@ while(1): # цикл обработки nn кадров
             for k in range(49,68): #
                 cv2.circle(frame, (shape.part(k).x, shape.part(k).y), 1, (0,0,255), 1)
             cv2.circle(frame, (shape.part(30).x, shape.part(30).y), 1, (0,255,255), 1)
-        for c in range(len(fdi)):
-            q = distance.euclidean(fdi[c],face_descriptor_frame)
-            if q<0.6:
-                mixer.music.load(mp3_pic_path+audio[c]) #Загрузка звуковой дорожки, содержащихся в списке sound, с последующим ее проигрыванием
-                mixer.music.play()
-                print('Привет {}!'.format(names[c]))
-                j=1     
-                sleep(2)
-            if j==0:
-                print('Пользователь не распознан')
-                mixer.music.load(mp3_pic_path+audio[4]) #Загрузка звуковой дорожки, содержащихся в списке sound, с последующим ее проигрыванием
-                mixer.music.play()
-                j=1 
-                sleep(2)     
+        if j == False:
+            
+
+            for c in range(len(fdi)):
+                q = distance.euclidean(fdi[c],face_descriptor_frame)
+                if (q<0.6) and (time_now() >= interval + time_pred1) or (first_go) and (q<0.6):
+
+                    mixer.music.load(audio[c]) #Загрузка звуковой дорожки, содержащихся в списке sound, с последующим ее проигрыванием
+                    mixer.music.play()
+                    print('Привет {}!'.format(names[c]))
+                    j = True
+                    time_pred1 = time_now()
+                    first_go = False
+                    #sleep(2)
+                if (j == False) and (time_now() >= interval + time_pred1) or (first_go) and (j == False):
+                    print('Пользователь не распознан')
+                    mixer.music.load(audio[4]) #Загрузка звуковой дорожки, содержащихся в списке sound, с последующим ее проигрыванием
+                    mixer.music.play()
+                    j = True
+                    first_go = False
+                    #sleep(2)     
     cv2.imshow('camera', image_resize(frame, height = 300)) # выводим картинку с камеры
     cv2.moveWindow('camera', 600,400)
     cv2.waitKey(10) # задержка изображений
+
     if keyboard.is_pressed('q'):
+        print('вы нажали q. Подождите пожалуйста')
         break 
 cv2.destroyAllWindows()
 
@@ -105,9 +122,9 @@ detector = dlib.get_frontal_face_detector() # создаем объект, ко�
 predictor = dlib.shape_predictor(dat_path+'shape_predictor_68_face_landmarks.dat') # загрузка(шаблона) данных обучения для точек на лице
 facerec = dlib.face_recognition_model_v1(dat_path+'dlib_face_recognition_resnet_model_v1.dat') # загрузка данных обучения нейросети resnet
 font= ImageFont.truetype("DejaVuSans.ttf", 18) # добавляем файл шрифта ttf с поддержкой кирилицы
-emotions=['Радость', 'Удивление', 'Грусть', 'Злость', 'Отвращение', 'Презрение', 'Страх'] #Список эмоций, которые будут выводиться в консоль
-sound=['1.mp3', '2.mp3', '3.mp3', '4.mp3', '5.mp3', '6.mp3', '7.mp3'] #Звуковые дорожки, содержащие обращение к каждой из эмоций
-sound1 = ['1_h.mp3', '2_h.mp3', '3_h.mp3', '4_h.mp3', '5_h.mp3', '6_h.mp3', '7_h.mp3'] #Звуковые дорожки, содержащие обращение к подсказке по каждой из эмоций
+emotions=('Радость', 'Удивление', 'Грусть', 'Злость', 'Отвращение', 'Презрение', 'Страх') #Список эмоций, которые будут выводиться в консоль
+sound=('1.mp3', '2.mp3', '3.mp3', '4.mp3', '5.mp3', '6.mp3', '7.mp3') #Звуковые дорожки, содержащие обращение к каждой из эмоций
+sound1 = ('1_h.mp3', '2_h.mp3', '3_h.mp3', '4_h.mp3', '5_h.mp3', '6_h.mp3', '7_h.mp3') #Звуковые дорожки, содержащие обращение к подсказке по каждой из эмоций
 pictures=['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg'] #Изображения, содержащие подсказки к каждой из эмоций
 f=open(dat_path+'svm_dat.dat','rb') # открываем файл svm_dat.dat для чтения как двоичный
 clf=pickle.load(f)# загружаем обученный метод svm 
