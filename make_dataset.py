@@ -1,9 +1,10 @@
 import cv2
 import time
+dat_path='Data/'
 cam = cv2.VideoCapture(0) # захватываем изображение
 cam.set(3, 800) # устанавливаем высоту кадра
 cam.set(4, 600) # устанавливаем ширину кадра
-face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml') # Установим классификатор лица, предоставляемый библиотекой OpenCV
+face_detector = cv2.CascadeClassifier(dat_path+'haarcascade_frontalface_default.xml') # Установим классификатор лица, предоставляемый библиотекой OpenCV
 face_id = input('\n введите номер эмоции и нажмите enter ==>  ') # Для каждой эмоции, устанавливаем свой id
 print("\t [INFO] Инициализация лица. Смотрите в камеру и ждите...")
 count = 0
@@ -18,7 +19,7 @@ while(True):
         cv2.imshow('image', img)
     if cv2.waitKey(300) & 0xff == 27:
         break # Для завершения работы программы нажмите «ESC»
-    elif count >= 200:
+    elif count >= 30:
         break # Выполнение программы заканчивается после того, как сделает определённое количество кадров (захватит изображений лица)
     print(count)
 
