@@ -5,7 +5,7 @@ cam = cv2.VideoCapture(0) # захватываем изображение
 cam.set(3, 800) # устанавливаем высоту кадра
 cam.set(4, 600) # устанавливаем ширину кадра
 face_detector = cv2.CascadeClassifier(dat_path+'haarcascade_frontalface_default.xml') # Установим классификатор лица, предоставляемый библиотекой OpenCV
-face_id = input('\n введите номер эмоции и нажмите enter ==>  ') # Для каждой эмоции, устанавливаем свой id
+face_id = input('\n Введите номер эмоции и нажмите enter ==>  ') # Для каждой эмоции, устанавливаем свой id
 print("\t [INFO] Инициализация лица. Смотрите в камеру и ждите...")
 count = 0
 while(True):
