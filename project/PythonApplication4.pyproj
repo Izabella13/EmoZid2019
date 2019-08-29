@@ -1,0 +1,68 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>f74bde17-9e3c-4ace-9643-09f99d17e5e4</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>indentification (1) (1).py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>PythonApplication4</Name>
+    <RootNamespace>PythonApplication4</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="4_indentification.py" />
+    <Compile Include="dlib_test.py" />
+    <Compile Include="Emotion_Hack_2.py" />
+    <Compile Include="Emotion_Hack_1.py" />
+    <Compile Include="Emotion_Hack_3.py" />
+    <Compile Include="Emotion_Hack_4.py" />
+    <Compile Include="em_detect.py" />
+    <Compile Include="im_em.py" />
+    <Compile Include="indentification %281%29 %281%29.py" />
+    <Compile Include="indentification %281%29.py" />
+    <Compile Include="indentification2.py" />
+    <Compile Include="indentification3.py" />
+    <Compile Include="indentification_4.py" />
+    <Compile Include="make_dataset.py" />
+    <Compile Include="indef.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="read_dat %282%29.py" />
+    <Compile Include="read_dat.py" />
+    <Compile Include="test_pr %281%29.py" />
+    <Compile Include="test_pr.py" />
+    <Compile Include="valid_em.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Emotion_Hack_1\" />
+    <Folder Include="Emotion_Hack_1\.vs\" />
+    <Folder Include="Emotion_Hack_1\.vs\Emotion_Hack_1\" />
+    <Folder Include="Emotion_Hack_1\.vs\Emotion_Hack_1\v16\" />
+    <Folder Include="Emotion_Hack_1\mp3_pic\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Emotion_Hack_1\.vs\Emotion_Hack_1\v16\.suo" />
+    <Content Include="Emotion_Hack_1\Emotion_Hack_1.sln" />
+    <Content Include="Emotion_Hack_1\mp3_pic\Thumbs.db" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
