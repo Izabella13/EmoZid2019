@@ -112,6 +112,9 @@ f=open(dat_path+'svm_dat.dat','rb') # открываем файл svm_dat.dat д
 clf=pickle.load(f)# загружаем обученный метод svm
 f.close # закрываем файл
 mixer.init() #Инициализация mixer из pygame
+
+# задаём параметры изображений для ускорения работы
+
 #video_capture = cv2.VideoCapture(0) # подключение камеры
 #video_capture.set(3, 360) # задаем размеры кадра камеры   160x120
 #video_capture.set(4, 240)

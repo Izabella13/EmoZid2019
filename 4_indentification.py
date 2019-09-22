@@ -33,7 +33,7 @@ audio = ['u_D.mp3','u_N.mp3','u_I.mp3','u_V.mp3','u_U.mp3']
 names = ['Даня','Никита','Белла','Вадимчик']
 ind_u=0
 mixer.init()
-'''
+
 for im in img_path:
     img = cv2.imread(mp3_pic_path+im)
     detections = detector(img, 1) # ф-ция выделяет лицо в прямоугольник
@@ -98,7 +98,7 @@ while(1): # цикл обработки nn кадров
         break 
     j+=1
 cv2.destroyAllWindows()
-'''
+
 nn=20 # кол-во кадров для обработки для определения эмоций
 P_em=0.5 # уровень подтвержения эмоций(если выше P_em, то переходим  к следующей эмоции)
 #Функция отвечающая за вывод окна с картинками
@@ -114,6 +114,9 @@ f=open(dat_path+'svm_dat.dat','rb') # открываем файл svm_dat.dat д
 clf=pickle.load(f)# загружаем обученный метод svm 
 f.close # закрываем файл
 mixer.init() #Инициализация mixer из pygame
+
+# задаём параметры изображений для ускорения работы
+
 #video_capture = cv2.VideoCapture(0) # подключение камеры
 #video_capture.set(3, 360) # задаем размеры кадра камеры   160x120
 #video_capture.set(4, 240) 
