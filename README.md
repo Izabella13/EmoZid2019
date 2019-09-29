@@ -16,7 +16,7 @@ https://visualstudio.microsoft.com/ru/vs/
 Входим в Visual Studio в папку проекта и вбиваем в поиск "Окружения Python".
 Жмем на первый в списке блок и справа у нас появляется новая вкладка.
 В ней выбираем anaconda, затем ниже выбираем "пакеты PyPl" вместо "Общие сведения" и скачиваем:
-scipy, pygame, keyboard, glob, cv2, dlib, PIL, pincle, numpy, sklearn, csv, cv2, CMake.
+scipy, pygame, keyboard, glob, cv2, dlib, PIL, pincle, numpy, sklearn, csv, cv2, CMake, opencv-contrib-python, opencv-python, Pillow, chardet.
 5) Запуск.
 Поздравляем, вы установили все необходимое и теперь осталось лишь запустить программу.
 Для этого откройте файл Indefication_4.py в Visual Studio, нажмите на правую кнопку мыши и нажмите на пункт "запуск без отладки".
