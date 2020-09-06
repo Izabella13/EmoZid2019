@@ -24,7 +24,7 @@ def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA): # 
 detector = dlib.get_frontal_face_detector() # создаем объект, который выделяет лицо прямоугольником
 predictor = dlib.shape_predictor(dat_path+'shape_predictor_68_face_landmarks.dat') # загрузка(шаблона) данных обучения для точек на лице
 facerec = dlib.face_recognition_model_v1(dat_path+'dlib_face_recognition_resnet_model_v1.dat') # загрузка данных обучения нейросети resnet
-video_capture = cv2.VideoCapture(0) # подключение камеры
+video_capture = cv2.VideoCapture(1) # подключение камеры
 video_capture.set(3, 360) # задаем размеры кадра камеры   160x120
 video_capture.set(4, 240) # 360x240
 img_path = ['p_D.jpg','p_N.jpg','p_I.jpg','p_V.jpg']         #'p_V.jpg'
@@ -119,7 +119,8 @@ mixer.init() #Инициализация mixer из pygame
 
 #video_capture = cv2.VideoCapture(0) # подключение камеры
 #video_capture.set(3, 360) # задаем размеры кадра камеры   160x120
-#video_capture.set(4, 240) 
+#video_capture.set(4, 240) ,
+5
 
 for i, em in enumerate(emotions): #Начало цикла, проходящему по всему списку emotions, содержащий и индекс i, и его содержание
     tries = 0 #Переменная, которая считает кол-во попыток изображения каждой эмоции

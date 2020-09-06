@@ -11,12 +11,12 @@ count = 0
 while(True):
     ret, img = cam.read()
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # Переводим изображение в оттенки серого
-    faces = face_detector.detectMultiScale(gray, 1.3, 5) # Выделяем лицо в прямоугольную область
+    '''faces = face_detector.detectMultiScale(gray, 1.3, 5) # Выделяем лицо в прямоугольную область
     for (x,y,w,h) in faces:
         count+=1
-        cv2.rectangle(img, (x,y), (x+w,y+h), (255,0,0), 2)
-        cv2.imwrite("dataset/Em_{}/EM_{}_{}.jpg".format(face_id, face_id, int(time.time()*1e9)), gray[y:y+h,x:x+w]) # Сохраняем захваченное изображение в папку dataset
-        cv2.imshow('image', img)
+        cv2.rectangle(img, (x,y), (x+w,y+h), (255,0,0), 2)'''
+    cv2.imwrite("Img/page"+str(count), gray) # Сохраняем захваченное изображение в папку dataset "dataset/Em_{}/EM_{}_{}.jpg".format(face_id, face_id, int(time.time()*1e9)), gray[y:y+h,x:x+w]
+    cv2.imshow('image', img)
     if cv2.waitKey(300) & 0xff == 27:
         break # Для завершения работы программы нажмите «ESC»
     elif count >= 30:

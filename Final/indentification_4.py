@@ -53,6 +53,7 @@ while(1): # цикл обработки nn кадров
             ind_d,ind_p,ind_u=1,0,0
     for k,d in enumerate(detections): # цикл по всем найденным на изображении лицам
         if j%3==0:
+            #print(d)
             shape = predictor(frame, d) #возвращает координаты точек на лице
             face_descriptor_frame = facerec.compute_face_descriptor(frame, shape) # получаем 128 дискрипторов лица
         cv2.rectangle(frame, (detections[0].left(), detections[0].top()), (detections[0].right(), detections[0].bottom()), (0, 0, 255), 1) # рисуем прямоугольник вокруг лица
@@ -67,6 +68,7 @@ while(1): # цикл обработки nn кадров
         for k in range(49,68): #
             cv2.circle(frame, (shape.part(k).x, shape.part(k).y), 1, (0,0,255), 1)
         cv2.circle(frame, (shape.part(30).x, shape.part(30).y), 1, (0,255,255), 1)
+
         if j%3==0:
             if not ind_p:
                 for c,fd in enumerate(fdi):
@@ -87,12 +89,14 @@ while(1): # цикл обработки nn кадров
     cv2.waitKey(10) # задержка изображений
     if keyboard.is_pressed('q'):
         print('вы нажали q. Подождите пожалуйста')
-        mixer.music.load(mp3_pic_path + 'scen.mp3') #Загрузка звуковой дорожки, содержащихся в списке sound, с последующим ее проигрыванием
-        mixer.music.play()
+        '''mixer.music.load(mp3_pic_path + 'scen.mp3') #Загрузка звуковой дорожки, содержащихся в списке sound, с последующим ее проигрыванием
+        mixer.music.play()'''
+        '''
         print('Выберите сценарий обучения:')
         print('1) Случайный порядок')
         print('2) Изначально заданная последовательность')
         choice = int(input())
+        '''
         break
     j+=1
 cv2.destroyAllWindows()
@@ -119,7 +123,7 @@ mixer.init() #Инициализация mixer из pygame
 #video_capture.set(3, 360) # задаем размеры кадра камеры   160x120
 #video_capture.set(4, 240)
 
-if choice == 1:
+'''if choice == 1:
     i=0
     while i<7:
         rand = random.randint(0,6)
@@ -127,7 +131,7 @@ if choice == 1:
         pictures[i], pictures[rand] = pictures[rand], pictures[i]
         sound[i], sound[rand] = sound[rand], sound[i]
         sound1[i], sound1[rand] = sound1[rand], sound1[i]
-        i+=1
+        i+=1 '''
 
 
 for i, em in enumerate(emotions): #Начало цикла, проходящему по всему списку emotions, содержащий и индекс i, и его содержание
@@ -170,15 +174,10 @@ for i, em in enumerate(emotions): #Начало цикла, проходящем
                 print(em_n)
                 if em_n==i+1: # если эмоция показана верна, то переходим к другой эмоции
                     emotion_result+=1
-                    img_pil = Image.fromarray(frame) # передаем изображение для обработки в библиотеку pillow
-                    draw = ImageDraw.Draw(img_pil) # создаем объект, содержащий изображение
-                    draw.text( (detections[0].left(), detections[0].top()-20),  emotions[int(em_n)-1], font=font, fill=(0,255,0)) # выводим текст кирилицей
-                    frame = np.array(img_pil) # возвращаем изображение с названием эмоции
-                else:
-                    img_pil = Image.fromarray(frame) # передаем изображение для обработки в библиотеку pillow
-                    draw = ImageDraw.Draw(img_pil) # создаем объект, содержащий изображение
-                    draw.text( (detections[0].left(), detections[0].top()-20),  emotions[int(em_n)-1], font=font, fill=(0,0,255)) # выводим текст кирилицей
-                    frame = np.array(img_pil) # возвращаем изображение с названием эмоции
+                img_pil = Image.fromarray(frame) # передаем изображение для обработки в библиотеку pillow
+                draw = ImageDraw.Draw(img_pil) # создаем объект, содержащий изображение
+                draw.text( (detections[0].left(), detections[0].top()-20),  emotions[int(em_n)-1], font=font, fill=(0,0,255)) # выводим текст кирилицей
+                frame = np.array(img_pil) # возвращаем изображение с названием эмоции
             cv2.waitKey(10) # задержка изображений
             cv2.imshow('camera', image_resize(frame, height = 600)) # выводим картинку с камеры
             cv2.moveWindow('camera', 600,150)

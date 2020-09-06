@@ -39,6 +39,7 @@ for im in img_path:
     img = cv2.imread(mp3_pic_path+im)
     detections = detector(img, 1) # ф-ция выделяет лицо в прямоугольник
     for k,d in enumerate(detections): # цикл по всем найденным на изображении лицам
+
         shape = predictor(img, d) #возвращает координаты точек на лице
         face_descriptor_img = facerec.compute_face_descriptor(img, shape) # получаем 128 дискрипторов лица
         fdi.append(face_descriptor_img)
@@ -170,16 +171,11 @@ for i, em in enumerate(emotions): #Начало цикла, проходящем
                 print(em_n)
                 if em_n==i+1: # если эмоция показана верна, то переходим к другой эмоции
                     emotion_result+=1
-                    img_pil = Image.fromarray(frame) # передаем изображение для обработки в библиотеку pillow
-                    draw = ImageDraw.Draw(img_pil) # создаем объект, содержащий изображение
-                    draw.text( (detections[0].left(), detections[0].top()-20),  emotions[int(em_n)-1], font=font, fill=(0,255,0)) # выводим текст кирилицей
-                    frame = np.array(img_pil) # возвращаем изображение с названием эмоции
-                else:
-                    img_pil = Image.fromarray(frame) # передаем изображение для обработки в библиотеку pillow
-                    draw = ImageDraw.Draw(img_pil) # создаем объект, содержащий изображение
-                    draw.text( (detections[0].left(), detections[0].top()-20),  emotions[int(em_n)-1], font=font, fill=(0,0,255)) # выводим текст кирилицей
-                    frame = np.array(img_pil) # возвращаем изображение с названием эмоции
-            cv2.waitKey(10) # задержка изображений
+                img_pil = Image.fromarray(frame) # передаем изображение для обработки в библиотеку pillow
+                draw = ImageDraw.Draw(img_pil) # создаем объект, содержащий изображение
+                draw.text( (detections[0].left(), detections[0].top()-20),  emotions[int(em_n)-1], font=font, fill=(0,255,0)) # выводим текст кирилицей
+                frame = np.array(img_pil) # возвращаем изображение с названием эмоции
+                cv2.waitKey(10) # задержка изображений
             cv2.imshow('camera', image_resize(frame, height = 600)) # выводим картинку с камеры
             cv2.moveWindow('camera', 600,150)
         emotion_result=emotion_result/nn # считаем долю правильно воспроизведенных эмоций
